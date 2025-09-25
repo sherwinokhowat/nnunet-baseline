@@ -10,14 +10,25 @@ def __entry__() -> None:
     parser.add_argument("-v", "--version", default="latest")
     parser.add_argument("-i", "--input", default="P:/SharedDatasets")
     parser.add_argument("-o", "--output", default="P:/SharedWeights/Erbium")
-    parser.add_argument("target", default=None)
+    parser.add_argument("--temporary", action="store_true")
+    parser.add_argument("-t", "--target", default=None)
     args = parser.parse_args()
     match args.action:
         case "pack":
-            if not exists(f"{args.target}/Dockerfile"):
-                raise FileNotFoundError(f"Dockerfile not found in {args.target}")
             target = args.target if args.target else "docker"
+            if not exists(f"{target}/Dockerfile"):
+                raise FileNotFoundError(f"Dockerfile not found in {args.target}")
             run(("docker", "build", "-t", f"erbium:{args.version}", target))
         case "run":
-            run(("docker", "run", "--ipc=host", "--rm", "-v", f"{args.input}:/workspace/input:ro", "-v",
-                 f"{args.output}:/workspace/output", args.target))
+            target = args.target if args.target else "erbium:latest"
+            if not exists(args.input):
+                raise FileNotFoundError(f"Input directory not found: {args.input}")
+            if not exists(args.output):
+                raise FileNotFoundError(f"Output directory not found: {args.output}")
+            commands = [
+                "docker", "run", "--ipc=host", "-v", f"{args.input}:/workspace/input:ro", "-v",
+                f"{args.output}:/workspace/output", target
+            ]
+            if args.temporary:
+                commands.insert(3, "--rm")
+            run(commands)
