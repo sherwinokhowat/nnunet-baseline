@@ -3,4 +3,4 @@ RUN python3.12 -m pip install git+https://github.com/ProjectNeura/Erbium.git
 COPY app /workspace/code
 WORKDIR /workspace/code
 RUN python3.12 -m pip install -r requirements.txt
-CMD ["python3.12", "main.py"]
+CMD ["bash", "main.sh"]
