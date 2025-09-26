@@ -5,7 +5,7 @@ Project Neura's Internal Computing Platform
 ## Install API
 
 ```shell
-pip install git+https://github.com/ProjectNeura/Erbium.git
+pip install git+https://github.com/ProjectNeura/Erbium
 ```
 
 ## Pack
