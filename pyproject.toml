@@ -26,4 +26,4 @@ Documentation = "https://github.com/ProjectNeura/Erbium"
 Repository = "https://github.com/ProjectNeura/Erbium"
 
 [project.scripts]
-mipcandy = "erbium:__entry__"
+erbium = "erbium:__entry__"
